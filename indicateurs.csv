@@ -1,0 +1,9 @@
+type,unite,description
+population,habitants,Population totale
+hommes,nombre,Population masculine
+femmes,nombre,Population féminine
+densite,hab/km²,Densité de population
+urbain,%,Taux de population urbaine
+taux_croissance,%,Taux de croissance démographique
+pourcentage_hommes,%,Pourcentage hommes
+pourcentage_femmes,%,Pourcentage de femmes
