@@ -1,0 +1,372 @@
+{
+  "version": 2,
+  "title": "Tableau de bord démographique des régions du Sénégal",
+  "description": "",
+  "pages": [
+    {
+      "id": "0",
+      "version": 1,
+      "title": "Première page",
+      "widgets": [
+        {
+          "version": 1,
+          "title": "Densité moyenne",
+          "w": 2,
+          "h": 2,
+          "x": 6,
+          "y": 0,
+          "meta": {},
+          "settings": {
+            "type": "singleValue",
+            "query": "MATCH (:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN max(p.densite) AS Densite_Max",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "fontSize": 72,
+            "align": 1
+          }
+        },
+        {
+          "version": 1,
+          "title": "Hommes et Femmes",
+          "w": 4,
+          "h": 3,
+          "x": 8,
+          "y": 10,
+          "meta": {},
+          "settings": {
+            "type": "pie",
+            "query": "MATCH (r:Region {nom:'Dakar'})-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN 'Hommes' AS Sexe, p.hommes AS Population\nUNION\nMATCH (r:Region {nom:'Dakar'})-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN 'Femmes' AS Sexe, p.femmes AS Population",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "valueKey": "Population",
+            "dimensionKey": "Sexe",
+            "showLegend": false,
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Régions",
+          "description": "",
+          "w": 2,
+          "h": 2,
+          "x": 4,
+          "y": 0,
+          "meta": {
+            "latestCypherQueries": [
+              {
+                "query": "MATCH (r:Region)\nRETURN count(r) AS Nombre_Regions",
+                "origin": "user"
+              }
+            ]
+          },
+          "settings": {
+            "type": "singleValue",
+            "query": "MATCH (r:Region)\nRETURN count(r) AS Nombre_Regions",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "fontSize": 72,
+            "textColor": "#000000",
+            "align": 1
+          }
+        },
+        {
+          "version": 1,
+          "title": "Population région plus peuplée",
+          "w": 4,
+          "h": 2,
+          "x": 8,
+          "y": 0,
+          "meta": {
+            "latestCypherQueries": [
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN p.totale AS Population_Max\nORDER BY Population_Max DESC\nLIMIT 1",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN p.totale AS Population_Max, r.nom\nORDER BY Population_Max DESC\nLIMIT 1",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN r.nom AS reg\nORDER BY reg DESC\nLIMIT 1",
+                "origin": "user"
+              }
+            ]
+          },
+          "settings": {
+            "type": "singleValue",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN p.totale AS Population_Max\nORDER BY Population_Max DESC\nLIMIT 1",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "fontSize": 72,
+            "align": 1
+          }
+        },
+        {
+          "version": 1,
+          "title": "Tableau de quelques statistiques des régions",
+          "w": 8,
+          "h": 4,
+          "x": 0,
+          "y": 6,
+          "meta": {},
+          "settings": {
+            "type": "table",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN\ndistinct(r.nom) AS Region,\nr.latitude AS Latitude,\nr.longitude AS Longitude,\np.totale AS Population_Totale,\np.hommes AS Hommes,\np.femmes AS Femmes,\np.densite AS Densite,\np.taux_urbain AS Taux_Urbain,\np.taux_croissance AS Taux_Croissance\nORDER BY Population_Totale DESC",
+            "databaseName": "e6b1e7ac",
+            "actions": [],
+            "version": 1,
+            "richRenderCells": false,
+            "enableRecordsDownload": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Répartition de la densité de population dans les régions",
+          "w": 4,
+          "h": 4,
+          "x": 0,
+          "y": 2,
+          "meta": {},
+          "settings": {
+            "type": "bar",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN\nr.nom AS region,\np.densite AS densite\nORDER BY densite DESC",
+            "databaseName": "e6b1e7ac",
+            "dimensionKey": "region",
+            "valueKeys": [
+              "densite"
+            ],
+            "orientation": "vertical",
+            "scaleType": "linear",
+            "showLegend": false,
+            "showDataZoom": "auto",
+            "version": 1,
+            "barArrangement": "grouped",
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Evolution de la population dans les régions 2002-2013-2023",
+          "w": 7,
+          "h": 4,
+          "x": 5,
+          "y": 13,
+          "meta": {
+            "latestCypherQueries": [
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2023]\nRETURN\nDISTINCT(r.nom) AS region,\na.valeur AS annee,\np.totale AS population\nORDER BY region, annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN\nDISTINCT(r.nom) AS region,\na.valeur AS annee,\np.totale AS population\nORDER BY region, annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN\nr.nom AS region,\na.valeur AS annee,\np.totale AS population\nORDER BY region, annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE r.nom = \"Dakar\"\nRETURN\nDISTINCT(a.valeur) AS annee,\np.densite AS densite\nORDER BY annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE r.nom = \"Dakar\"\nRETURN\na.valeur AS annee,\np.densite AS densite\nORDER BY annee",
+                "origin": "user"
+              }
+            ]
+          },
+          "settings": {
+            "type": "line",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN \nDISTINCT(r.nom) AS region,\na.valeur AS annee,\np.totale AS population\nORDER BY region, annee",
+            "databaseName": "e6b1e7ac",
+            "valueKeys": [],
+            "orientation": "vertical",
+            "scaleType": "linear",
+            "showLegend": "auto",
+            "showDataZoom": "auto",
+            "version": 1,
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Evolution de la population de Dakar de 02-13-23",
+          "w": 5,
+          "h": 4,
+          "x": 0,
+          "y": 13,
+          "meta": {
+            "latestCypherQueries": [
+              {
+                "query": "MATCH (r:Region {nom:\"Dakar\"})-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN\nDISTINCT(a.valeur) AS annee,\np.totale AS population\nORDER BY annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region {nom:\"Dakar\"})-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN\na.valeur AS annee,\np.totale AS population\nORDER BY annee",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE p.densite IS NULL\nRETURN DISTINCT(r.nom), a.valeur",
+                "origin": "user"
+              },
+              {
+                "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee)\nWHERE p.densite IS NULL\nRETURN r.nom, a.valeur",
+                "origin": "user"
+              }
+            ]
+          },
+          "settings": {
+            "type": "line",
+            "query": "MATCH (r:Region {nom:\"Dakar\"})-[p:A_POPULATION]->(a:Annee)\nWHERE a.valeur IN [2002, 2013, 2023]\nRETURN \nDISTINCT(a.valeur) AS annee,\np.totale AS population\nORDER BY annee",
+            "databaseName": "e6b1e7ac",
+            "valueKeys": [],
+            "orientation": "vertical",
+            "scaleType": "linear",
+            "showLegend": "auto",
+            "showDataZoom": "auto",
+            "version": 1,
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Population des régions",
+          "w": 4,
+          "h": 4,
+          "x": 8,
+          "y": 6,
+          "meta": {},
+          "settings": {
+            "type": "pie",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN\ndistinct(r.nom) AS Region,\np.totale AS Population\nORDER BY Population DESC",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "valueKey": "Population",
+            "dimensionKey": "Region",
+            "showLegend": false,
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Hommes",
+          "w": 4,
+          "h": 3,
+          "x": 4,
+          "y": 10,
+          "meta": {},
+          "settings": {
+            "type": "bar",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN\nr.nom AS region,\np.hommes AS hommes,\np.femmes AS femmes",
+            "databaseName": "e6b1e7ac",
+            "dimensionKey": "region",
+            "valueKeys": [
+              "hommes",
+              "femmes"
+            ],
+            "orientation": "vertical",
+            "scaleType": "linear",
+            "showLegend": true,
+            "showDataZoom": "auto",
+            "version": 1,
+            "barArrangement": "grouped",
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Répartition de la densité de population dans les régions (Copy)",
+          "w": 4,
+          "h": 4,
+          "x": 4,
+          "y": 2,
+          "meta": {
+            "latestCypherQueries": [
+              {
+                "query": "MATCH (r:Region) RETURN r LIMIT 100",
+                "origin": "user"
+              }
+            ]
+          },
+          "settings": {
+            "type": "map",
+            "query": "MATCH (r:Region) RETURN r LIMIT 100",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "detectKeyFields": "auto",
+            "enableDownloadImage": true,
+            "keyFields": [],
+            "tileProviderUrl": "",
+            "mapStyle": "detailed",
+            "geospatialProperties": []
+          }
+        },
+        {
+          "version": 1,
+          "title": "Graphe des relations POSSEDE_INDICATEUR",
+          "w": 4,
+          "h": 3,
+          "x": 0,
+          "y": 10,
+          "meta": {},
+          "settings": {
+            "type": "graph",
+            "query": "MATCH p=()-[:POSSEDE_INDICATEUR]->() RETURN p limit 25;",
+            "databaseName": "e6b1e7ac",
+            "version": 2,
+            "enableSidePanel": true,
+            "enableContextMenu": true,
+            "layout": {
+              "type": "d3Force"
+            },
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Répartition de la population des régions du Sénégal",
+          "w": 4,
+          "h": 4,
+          "x": 8,
+          "y": 2,
+          "meta": {},
+          "settings": {
+            "type": "bar",
+            "query": "MATCH (r:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN\nr.nom AS region,\np.totale AS population\nORDER BY population DESC",
+            "databaseName": "e6b1e7ac",
+            "dimensionKey": "region",
+            "valueKeys": [
+              "population"
+            ],
+            "orientation": "vertical",
+            "scaleType": "linear",
+            "showLegend": "auto",
+            "showDataZoom": "auto",
+            "version": 1,
+            "barArrangement": "grouped",
+            "enableDownloadImage": true
+          }
+        },
+        {
+          "version": 1,
+          "title": "Population Sénégal en 2023",
+          "w": 4,
+          "h": 2,
+          "x": 0,
+          "y": 0,
+          "meta": {},
+          "settings": {
+            "type": "singleValue",
+            "query": "MATCH (:Region)-[p:A_POPULATION]->(a:Annee {valeur:2023})\nRETURN sum(p.hommes) AS Hommes_Total",
+            "databaseName": "e6b1e7ac",
+            "version": 1,
+            "fontSize": 72,
+            "align": 1
+          }
+        }
+      ]
+    }
+  ],
+  "params": []
+}
