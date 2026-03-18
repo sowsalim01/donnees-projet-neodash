@@ -1,4 +1,12 @@
 {
+  "connection": {
+    "type": "neo4j",
+    "scheme": "neo4j+s",
+    "host": "e6b1e7ac.databases.neo4j.io",
+    "port": 7687,
+    "username": "viewer",
+    "password": "4gpG5zdRzAqLVQUjLw4wx_ArefySXt3V0G6NbaugSVg"
+  },
   "version": 2,
   "title": "Tableau de bord démographique des régions du Sénégal",
   "description": "",
